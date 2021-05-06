@@ -76,16 +76,16 @@
         const App = {
             template: `
             <div id='box'>
-              <div class="sidebar_left">
-                  <ul>
-                      <router-link tag='li' to='/index'>首页</router-link>
-                      <router-link tag='li' to='/goods'>商品</router-link>
-                      <router-link tag='li' to='/settings'>设置</router-link>
-                  </ul>
-              </div>
-              <div class="content_right">
-                  <router-view></router-view>
-              </div>
+                <div class="sidebar_left">
+                    <ul>
+                        <router-link tag='li' to='/index'>首页</router-link>
+                        <router-link tag='li' to='/goods'>商品</router-link>
+                        <router-link tag='li' to='/settings'>设置</router-link>
+                    </ul>
+                </div>
+                <div class="content_right">
+                    <router-view></router-view>
+                </div>
             </div>
             `,
         }
@@ -93,19 +93,19 @@
         const Index = {
             template: `
             <h2>
-              欢迎进入
-            </h2>
-          `
+                欢迎进入
+                </h2>
+            `
         }
 
         const Goods = {
             template: `
             <div>
-              <div v-for="item in list" :key='item.id'>
+                <div v-for="item in list" :key='item.id'>
                 <a href="javascript:;" @click='goGoodsList(item.id)'>{{item.title}}</a>
-              </div>
+                </div>
             </div>
-          `,
+            `,
             methods: {
                 goGoodsList(id) {
                     this.$router.push('/goodslist/' + id);
@@ -130,39 +130,39 @@
         const Settings = {
             template: `
             <div>
-              <h3>
-              <router-link to='/settings/set1'>权限设置</router-link>
-              <router-link to='/settings/set2'>公司设置</router-link>
+                <h3>
+                <router-link to='/settings/set1'>权限设置</router-link>
+                <router-link to='/settings/set2'>公司设置</router-link>
 
-              </h3>
-              <router-view></router-view>
+                </h3>
+                <router-view></router-view>
             </div>
-          `
+            `
         }
 
         const GoodsList = {
             props: ['id'],
             template: `
             <div>
-              商品{{id}}：<button @click='$router.go(-1)'>返回</button>
+                商品{{id}}：<button @click='$router.go(-1)'>返回</button>
             </div>
-          `
+            `
         }
 
         const Set1 = {
             template: `
             <div>
-              权限设置组件
+                权限设置组件
             </div>
-          `
+            `
         }
 
         const Set2 = {
             template: `
             <div>
-              公司设置组件
+                公司设置组件
             </div>
-          `
+            `
         }
 
         const router = new VueRouter({
