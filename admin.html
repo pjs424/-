@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0,minimal-ui:ios">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="lib/vue_2.5.22.js"></script>
+    <script src="lib/vue-router_3.0.2.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        html,
+        body,
+        #box {
+            width: 100%;
+            height: 100%;
+        }
+        
+        #app {
+            height: 100%;
+            background-color: #eee;
+        }
+        
+        #box {
+            display: flex;
+        }
+        
+        .sidebar_left {
+            width: 100px;
+            height: 100%;
+            background-color: cornflowerblue;
+        }
+        
+        .sidebar_left ul li {
+            width: 100px;
+            height: 40px;
+            line-height: 40px;
+            text-align: left;
+            padding-left: 15px;
+            cursor: pointer;
+            border-top: 1px solid #eee;
+            list-style: none;
+        }
+        
+        .content_right {
+            flex: 1;
+            background-color: #eee;
+        }
+        
+        a {
+            list-style: none;
+            text-decoration: none;
+            color: #000;
+        }
+        
+        h3 {
+            display: flex;
+            justify-content: space-evenly;
+            background-color: #aaa;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <router-view></router-view>
+    </div>
+
+    <script>
+        const App = {
+            template: `
+            <div id='box'>
+              <div class="sidebar_left">
+                  <ul>
+                      <router-link tag='li' to='/index'>首页</router-link>
+                      <router-link tag='li' to='/goods'>商品</router-link>
+                      <router-link tag='li' to='/settings'>设置</router-link>
+                  </ul>
+              </div>
+              <div class="content_right">
+                  <router-view></router-view>
+              </div>
+            </div>
+            `,
+        }
+
+        const Index = {
+            template: `
+            <h2>
+              欢迎进入
+            </h2>
+          `
+        }
+
+        const Goods = {
+            template: `
+            <div>
+              <div v-for="item in list" :key='item.id'>
+                <a href="javascript:;" @click='goGoodsList(item.id)'>{{item.title}}</a>
+              </div>
+            </div>
+          `,
+            methods: {
+                goGoodsList(id) {
+                    this.$router.push('/goodslist/' + id);
+                }
+            },
+            data() {
+                return {
+                    list: [{
+                        id: 1,
+                        title: '鞋子'
+                    }, {
+                        id: 2,
+                        title: '袜子'
+                    }, {
+                        id: 3,
+                        title: '腰带'
+                    }]
+                }
+            },
+        }
+
+        const Settings = {
+            template: `
+            <div>
+              <h3>
+              <router-link to='/settings/set1'>权限设置</router-link>
+              <router-link to='/settings/set2'>公司设置</router-link>
+
+              </h3>
+              <router-view></router-view>
+            </div>
+          `
+        }
+
+        const GoodsList = {
+            props: ['id'],
+            template: `
+            <div>
+              商品{{id}}：<button @click='$router.go(-1)'>返回</button>
+            </div>
+          `
+        }
+
+        const Set1 = {
+            template: `
+            <div>
+              权限设置组件
+            </div>
+          `
+        }
+
+        const Set2 = {
+            template: `
+            <div>
+              公司设置组件
+            </div>
+          `
+        }
+
+        const router = new VueRouter({
+            routes: [{
+                path: '/',
+                component: App,
+                redirect: '/index',
+                children: [{
+                    path: '/index',
+                    component: Index
+                }, {
+                    path: '/goods',
+                    component: Goods
+                }, {
+                    path: '/settings',
+                    component: Settings,
+                    redirect: '/settings/set1',
+                    children: [{
+                        path: '/settings/set1',
+                        component: Set1
+                    }, {
+                        path: '/settings/set2',
+                        component: Set2
+                    }]
+                }, {
+                    path: '/goodslist/:id',
+                    component: GoodsList,
+                    props: true
+                }]
+            }]
+        });
+
+        const vm = new Vue({
+            el: '#app',
+            router
+        })
+    </script>
+</body>
+
+</html>
